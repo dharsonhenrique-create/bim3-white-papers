@@ -9,22 +9,27 @@
   <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fonte: 'aller' é Typekit (proprietária). Lato é a alternativa gratuita
-       mais próxima visualmente — sans-serif humanista com pesos 300 e 700.
-       Se você tiver licença Adobe Fonts, troque pelo kit do Typekit. -->
+  <!--
+    Fonte original: 'aller' (Adobe Fonts/Typekit, proprietária).
+    Substituta: 'Lato' (Google Fonts) — sans-serif humanista mais próxima.
+    Se você tiver licença Adobe Fonts da BIM³, troque o <link> abaixo
+    pelo kit Typekit (https://use.typekit.net/<seu-id>.css).
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet" />
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { sans: ['Lato', 'aller', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          fontFamily: { sans: ['Lato', 'aller', 'system-ui', 'sans-serif'] },
           colors: {
-            'text-body':   '#333333',  // body real
-            'text-h2':     '#3F3B44',  // h2 "White Papers" real
-            'text-hero':   '#EEEEEE',  // textos do hero real
+            'bim-text':     '#333333',  // body
+            'bim-h2':       '#3F3B44',  // h2 e títulos dos cards
+            'bim-hero':     '#EEEEEE',  // textos do hero
+            'bim-footer':   '#EEEEEE',  // links do footer
+            'bim-social':   '#69727D',  // ícones sociais
           }
         }
       }
@@ -32,37 +37,62 @@
   </script>
 
   <style>
-    html { scroll-behavior: smooth; }
     body { font-family: 'Lato', 'aller', sans-serif; -webkit-font-smoothing: antialiased; color: #333; }
 
-    /* Tipografia exata extraída do site original */
-    .typo-h1     { font-size: 36px; font-weight: 300; line-height: 43.2px; letter-spacing: -0.5px; }
-    .typo-sub    { font-size: 22px; font-weight: 300; line-height: 26.4px; letter-spacing: -0.5px; }
-    .typo-h2     { font-size: 36px; font-weight: 600; line-height: 36px; }
-    .typo-nav    { font-size: 13px; font-weight: 300; line-height: 20px; letter-spacing: -0.1px; text-transform: uppercase; }
-    .typo-card-title { font-size: 18px; font-weight: 400; line-height: 1.4; }
+    /* ==== TIPOGRAFIA EXATA (computed style do site original) ==== */
+    .typo-h1-hero    { font-size: 36px; font-weight: 300; line-height: 43.2px; letter-spacing: -0.5px; }
+    .typo-sub-hero   { font-size: 22px; font-weight: 300; line-height: 26.4px; letter-spacing: -0.5px; }
+    .typo-h2-section { font-size: 36px; font-weight: 600; line-height: 36px; }
+    .typo-card-title { font-size: 26px; font-weight: 300; line-height: 31.2px; letter-spacing: -0.5px; }
+    .typo-nav-header { font-size: 13px; font-weight: 300; line-height: 20px; letter-spacing: -0.1px; text-transform: uppercase; }
+    .typo-nav-footer { font-size: 16px; font-weight: 400; line-height: 20px; text-transform: uppercase; }
 
-    /* Card: shadow real medida no DevTools */
+    /* ==== HERO REAL ==== */
+    /* Container: fundo preto + min-height 65vh (igual ao Elementor) */
+    .hero {
+      background-color: #000;
+      min-height: 65vh;
+      position: relative;
+      isolation: isolate;
+    }
+    /* Pseudo-elemento ::before com a imagem abstrata @ 50% opacidade
+       — exatamente como o Elementor configura no site original */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("https://bim3.com.br/wp-content/uploads/2025/07/pawel-czerwinski-ve-UaSZQtqk-unsplash-scaled.jpg");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ==== CARD ==== */
     .card-shadow { box-shadow: 0 0 10px rgba(0,0,0,0.15); }
 
-    /* Hero: fundo preto puro confirmado pelo computed style.
-       As linhas curvas decorativas ficam como camada SVG opcional,
-       sutil — se o site real for 100% preto, basta remover o <svg>. */
-    .hero { background-color: #000; }
+    @media (max-width: 767px) {
+      .hero { min-height: 50vh; }
+      .typo-h1-hero    { font-size: 28px; line-height: 1.2; }
+      .typo-sub-hero   { font-size: 18px; }
+      .typo-h2-section { font-size: 28px; }
+      .typo-card-title { font-size: 20px; line-height: 1.3; }
+    }
   </style>
 </head>
 
 <body class="bg-white">
 
-  <!-- ========== HEADER ========== -->
+  <!-- ============== HEADER ============== -->
   <header class="bg-white">
-    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 flex items-center justify-between" style="min-height: 140px;">
+    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 flex items-center justify-between" style="min-height:140px;">
       <a href="#" aria-label="BIM³">
         <img src="https://bim3.com.br/wp-content/uploads/2025/06/bim-horizontal-k.png"
-             alt="BIM³" width="170" height="68" class="block" />
+             alt="BIM³" width="170" height="68" class="block h-auto w-[170px]" />
       </a>
 
-      <nav class="hidden md:flex items-center gap-8 typo-nav">
+      <nav class="hidden md:flex items-center gap-8 typo-nav-header">
         <a href="#" class="text-black hover:opacity-60 transition-opacity">Home</a>
         <a href="#" class="text-black hover:opacity-60 transition-opacity">Quem Somos</a>
         <a href="#" class="text-black hover:opacity-60 transition-opacity">Produtos e Serviços</a>
@@ -77,7 +107,7 @@
       </button>
     </div>
 
-    <nav id="mobile-menu" class="hidden md:hidden flex-col bg-white border-t border-gray-100 px-5 py-4 gap-2 typo-nav">
+    <nav id="mobile-menu" class="hidden md:hidden flex-col bg-white border-t border-gray-100 px-5 py-4 gap-2 typo-nav-header">
       <a href="#" class="text-black py-2">Home</a>
       <a href="#" class="text-black py-2">Quem Somos</a>
       <a href="#" class="text-black py-2">Produtos e Serviços</a>
@@ -86,56 +116,34 @@
     </nav>
   </header>
 
-  <!-- ========== HERO (preto puro confirmado pelo getComputedStyle) ========== -->
-  <section class="hero relative overflow-hidden flex items-center" style="min-height: 536px;">
-    <!--
-      Camada SVG decorativa OPCIONAL: linhas curvas roxas/magenta sutis.
-      Se o site real for 100% preto, remova o bloco <svg> abaixo.
-      O computed style retornou background-image:none, mas o Elementor
-      faz lazy-load de imagens de fundo, então é possível que exista
-      uma PNG que não havia carregado quando o script rodou.
-    -->
-    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-90" viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#8A2BE2" stop-opacity="0"/>
-          <stop offset="50%" stop-color="#C71585" stop-opacity=".5"/>
-          <stop offset="100%" stop-color="#8A2BE2" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#4B0082" stop-opacity="0"/>
-          <stop offset="50%" stop-color="#9400D3" stop-opacity=".4"/>
-          <stop offset="100%" stop-color="#4B0082" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <path d="M -100 450 Q 400 100, 800 350 T 1600 200" stroke="url(#lg1)" stroke-width="2" fill="none"/>
-      <path d="M -100 500 Q 500 200, 900 400 T 1600 250" stroke="url(#lg2)" stroke-width="1.5" fill="none"/>
-      <path d="M -100 350 Q 300 50,  700 250 T 1600 100" stroke="url(#lg1)" stroke-width="1" fill="none" opacity=".6"/>
-    </svg>
-
-    <div class="relative max-w-[1200px] mx-auto px-5 lg:px-10 w-full">
+  <!-- ============== HERO ============== -->
+  <!-- min-height 65vh, fundo preto + ::before com imagem abstrata Unsplash @ 50% opacidade.
+       Conteúdo: flex column, centralizado vertical, alinhado à esquerda. -->
+  <section class="hero flex flex-col justify-center">
+    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 w-full">
       <div class="max-w-[640px]">
-        <h1 class="typo-h1 text-text-hero mb-12">
+        <p class="typo-h1-hero text-bim-hero mb-12">
           Faça download de <em class="italic font-light">White Papers</em> e estudos de caso que são referência para o mercado automotivo pesado.
-        </h1>
-        <p class="typo-sub text-text-hero">Estudos completos para download.</p>
+        </p>
+        <p class="typo-sub-hero text-bim-hero">Estudos completos para download.</p>
       </div>
     </div>
   </section>
 
-  <!-- ========== WHITE PAPERS ========== -->
-  <section class="bg-white py-16">
+  <!-- ============== WHITE PAPERS GRID ============== -->
+  <section class="bg-white py-14 md:py-16">
     <div class="max-w-[1200px] mx-auto px-5 lg:px-10">
-      <h2 class="typo-h2 text-text-h2 mb-12">White Papers</h2>
+      <h2 class="typo-h2-section text-bim-h2 mb-12">White Papers</h2>
 
-      <!-- Layout real: flex row wrap com gap 20px (NÃO grid) -->
+      <!-- Layout real: flex row wrap com gap 20px (não grid) -->
       <div class="flex flex-row flex-wrap gap-5">
 
         <!-- Card 1 -->
-        <article class="w-full md:w-[calc(50%-10px)]">
-          <p class="typo-card-title text-text-body mb-3">Forecast Maquinas Agrícolas</p>
+        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+          <p class="typo-card-title text-bim-h2">Forecast Maquinas Agrícolas</p>
           <a href="https://bim3.com.br/wp-content/uploads/2026/02/MKT-INSIGHT-FORECAST_2026_2030-Rev_Feb26.pdf"
-             target="_blank" rel="noopener" class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
+             target="_blank" rel="noopener"
+             class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
             <img src="https://bim3.com.br/wp-content/uploads/2026/02/Market-insight.jpg"
                  alt="Market Insight & Forecast - Máquinas Agrícolas"
                  width="600" height="450" class="w-full h-auto block" />
@@ -143,10 +151,11 @@
         </article>
 
         <!-- Card 2 -->
-        <article class="w-full md:w-[calc(50%-10px)]">
-          <p class="typo-card-title text-text-body mb-3">Forecast Caminhões e Ônibus</p>
+        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+          <p class="typo-card-title text-bim-h2">Forecast Caminhões e Ônibus</p>
           <a href="https://bim3.com.br/wp-content/uploads/2026/02/MKT-INSIGHT-FORECAST_2026_2030-Rev_Jan_26.pdf"
-             target="_blank" rel="noopener" class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
+             target="_blank" rel="noopener"
+             class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
             <img src="https://bim3.com.br/wp-content/uploads/2026/02/Truck-bus.jpg"
                  alt="[BIM]³ - Truck & Bus Forecast 2026"
                  width="600" height="450" class="w-full h-auto block" />
@@ -154,10 +163,11 @@
         </article>
 
         <!-- Card 3 -->
-        <article class="w-full md:w-[calc(50%-10px)]">
-          <p class="typo-card-title text-text-body mb-3">White Paper Move Brasil</p>
+        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+          <p class="typo-card-title text-bim-h2">White Paper Move Brasil</p>
           <a href="https://bim3.com.br/wp-content/uploads/2026/02/PAPER_Racional_Move_white_paper.pdf"
-             target="_blank" rel="noopener" class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
+             target="_blank" rel="noopener"
+             class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
             <img src="https://bim3.com.br/wp-content/uploads/2026/02/white-paper.jpg"
                  alt="White Paper Move Brasil"
                  width="600" height="450" class="w-full h-auto block" loading="lazy" />
@@ -165,10 +175,11 @@
         </article>
 
         <!-- Card 4 -->
-        <article class="w-full md:w-[calc(50%-10px)]">
-          <p class="typo-card-title text-text-body mb-3">Máquinas Agrícolas: Peças de Reposição – Mercado Carente e Lucrativo</p>
+        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+          <p class="typo-card-title text-bim-h2">Máquinas Agrícolas: Peças de Reposição – Mercado Carente e Lucrativo</p>
           <a href="https://bim3.com.br/wp-content/uploads/2026/04/O-Aftermarket-Invisivel-1o.-Artigo-BIM.pdf"
-             target="_blank" rel="noopener" class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
+             target="_blank" rel="noopener"
+             class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
             <img src="https://bim3.com.br/wp-content/uploads/2026/04/Img-bim.jpg"
                  alt="Peças de Reposição - Mercado Carente e Lucrativo"
                  width="600" height="450" class="w-full h-auto block" loading="lazy" />
@@ -176,10 +187,11 @@
         </article>
 
         <!-- Card 5 -->
-        <article class="w-full md:w-[calc(50%-10px)]">
-          <p class="typo-card-title text-text-body mb-3">Panorama de Máquinas Agrícolas no Brasil</p>
+        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
+          <p class="typo-card-title text-bim-h2">Panorama de Máquinas Agrícolas no Brasil</p>
           <a href="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL-APRESENTACAO_White_Paper_revisado.pdf"
-             target="_blank" rel="noopener" class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
+             target="_blank" rel="noopener"
+             class="block card-shadow p-[30px] bg-white hover:opacity-95 transition-opacity">
             <img src="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL.jpg"
                  alt="Panorama de Máquinas Agrícolas no Brasil"
                  width="600" height="450" class="w-full h-auto block" loading="lazy" />
@@ -190,53 +202,63 @@
     </div>
   </section>
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="bg-black text-white">
+  <!-- ============== FOOTER ============== -->
+  <footer class="bg-black text-bim-footer">
     <div class="max-w-[1200px] mx-auto px-5 lg:px-10 py-16">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+
+        <!-- Logo -->
         <div>
           <img src="https://bim3.com.br/wp-content/uploads/2025/06/bim3-white-1-712x1024.png"
-               alt="BIM³" class="w-32 h-auto" />
+               alt="BIM³" width="97" height="139" class="w-[97px] h-auto" />
         </div>
 
-        <nav class="flex flex-col space-y-3 typo-nav">
-          <a href="#" class="text-white hover:opacity-70">Home</a>
-          <a href="#" class="text-white hover:opacity-70">Quem Somos</a>
-          <a href="#" class="text-white hover:opacity-70">Produtos e Serviços</a>
-          <a href="#" class="text-white hover:opacity-70">Artigos e Imprensa</a>
-          <a href="#" class="text-white hover:opacity-70">Contato</a>
+        <!-- Menu (16px, weight 400, #EEEEEE — confirmado pelo computed style) -->
+        <nav class="flex flex-col space-y-3 typo-nav-footer">
+          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Home</a>
+          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Quem Somos</a>
+          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Produtos e Serviços</a>
+          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Artigos e Imprensa</a>
+          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Contato</a>
         </nav>
 
+        <!-- Social -->
         <div class="flex flex-col md:items-end">
-          <p class="typo-nav mb-4">Siga-nos nas redes sociais</p>
-          <div class="flex gap-4">
-            <a href="https://www.instagram.com/boschiconsultoria/" target="_blank" rel="noopener" aria-label="Instagram" class="hover:opacity-70">
+          <p class="typo-nav-footer mb-5">Siga-nos nas redes sociais</p>
+          <div class="flex gap-3">
+            <!-- Social icons: 48x48 com cor #69727D, fundo preto — confirmado -->
+            <a href="https://www.instagram.com/boschiconsultoria/" target="_blank" rel="noopener" aria-label="Instagram"
+               class="w-12 h-12 flex items-center justify-center bg-black text-bim-social hover:text-white transition-colors">
               <svg width="22" height="22" viewBox="0 0 448 512" fill="currentColor">
                 <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
               </svg>
             </a>
-            <a href="https://www.linkedin.com/company/bim3/" target="_blank" rel="noopener" aria-label="LinkedIn" class="hover:opacity-70">
+            <a href="https://www.linkedin.com/company/bim3/" target="_blank" rel="noopener" aria-label="LinkedIn"
+               class="w-12 h-12 flex items-center justify-center bg-black text-bim-social hover:text-white transition-colors">
               <svg width="22" height="22" viewBox="0 0 448 512" fill="currentColor">
                 <path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
               </svg>
             </a>
           </div>
         </div>
+
       </div>
 
-      <div class="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row md:justify-between md:items-center text-xs text-white/60 gap-4">
-        <p class="text-center md:text-left">© 2026 BIM³ – Todos os direitos reservados.</p>
-        <p class="text-center md:text-right">
-          <a href="http://www.gingerpages.com.br" target="_blank" rel="noopener" class="hover:text-white">
-            <img src="https://bim3.com.br/wp-content/uploads/2025/06/logo-gingerpagesW.png" alt="gingerpages" class="h-3 w-auto inline-block" />
-          </a>
+      <!-- Bottom bar: copyright + gingerpages -->
+      <div class="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <p class="text-center md:text-left text-sm" style="color:#EEEEEE;opacity:0.7">
+          © 2026 BIM³ – Todos os direitos reservados.
         </p>
+        <a href="http://www.gingerpages.com.br" target="_blank" rel="noopener" class="hover:opacity-100 opacity-70 transition-opacity self-center md:self-auto">
+          <img src="https://bim3.com.br/wp-content/uploads/2025/06/logo-gingerpagesW.png"
+               alt="gingerpages" width="100" class="h-auto" />
+        </a>
       </div>
     </div>
   </footer>
 
   <script>
-    const btn = document.getElementById('menu-btn');
+    const btn  = document.getElementById('menu-btn');
     const menu = document.getElementById('mobile-menu');
     btn.addEventListener('click', () => {
       const isHidden = menu.classList.toggle('hidden');
