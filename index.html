@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Faça download de White Papers e estudos de caso que são referência para o mercado automotivo pesado." />
+  <title>Insights & White Papers – BIM³</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonte Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          colors: {
+            'brand-gold':   '#D4AF37',
+            'brand-blue':   '#0056B3',
+            'brand-purple': '#8A2BE2'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* Hero: fundo preto com gradientes roxo/magenta */
+    .hero-bg {
+      background-color: #000;
+      background-image:
+        radial-gradient(ellipse 1200px 400px at 15% 60%, rgba(138, 43, 226, 0.55) 0%, transparent 60%),
+        radial-gradient(ellipse 900px 300px at 85% 30%, rgba(199, 21, 133, 0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 700px 250px at 60% 80%, rgba(75, 0, 130, 0.6) 0%, transparent 70%),
+        linear-gradient(135deg, #000 0%, #1a0033 40%, #2a0845 70%, #000 100%);
+    }
+    .card { transition: transform .3s ease, box-shadow .3s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+  <!-- ========== HEADER ========== -->
+  <header class="bg-white sticky top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-5">
+      <a href="#" class="flex items-center gap-2" aria-label="BIM3">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="#000">
+          <circle cx="8" cy="14" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="24" cy="14" r="2"/>
+          <circle cx="8" cy="22" r="2"/><circle cx="16" cy="22" r="2"/><circle cx="24" cy="22" r="2"/>
+          <circle cx="8" cy="30" r="2"/><circle cx="16" cy="30" r="2"/><circle cx="24" cy="30" r="2"/>
+          <circle cx="14" cy="8" r="2"/><circle cx="22" cy="8" r="2"/><circle cx="30" cy="8" r="2"/>
+          <circle cx="30" cy="16" r="2"/><circle cx="30" cy="24" r="2"/>
+        </svg>
+        <span class="text-xl font-bold tracking-tight text-black">[BIM]<sup class="text-sm">3</sup></span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-[12px] font-medium tracking-wider uppercase">
+        <a href="#" class="text-gray-600 hover:text-black">Home</a>
+        <a href="#" class="text-gray-600 hover:text-black">Quem Somos</a>
+        <a href="#" class="text-brand-gold font-semibold">Produtos e Serviços</a>
+        <a href="#" class="text-gray-600 hover:text-black">Artigos e Imprensa</a>
+        <a href="#" class="text-gray-600 hover:text-black">Contato</a>
+      </nav>
+
+      <button id="menu-btn" class="md:hidden p-2 text-black" aria-label="Menu">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav id="mobile-menu" class="hidden md:hidden flex-col bg-white border-t border-gray-100 px-4 py-4 gap-4 text-[13px] uppercase tracking-wider">
+      <a href="#" class="text-gray-700 py-2">Home</a>
+      <a href="#" class="text-gray-700 py-2">Quem Somos</a>
+      <a href="#" class="text-brand-gold font-semibold py-2">Produtos e Serviços</a>
+      <a href="#" class="text-gray-700 py-2">Artigos e Imprensa</a>
+      <a href="#" class="text-gray-700 py-2">Contato</a>
+    </nav>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero-bg relative overflow-hidden min-h-[480px] md:min-h-[560px] flex items-center">
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 600" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#8A2BE2" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#C71585" stop-opacity=".6"/>
+          <stop offset="100%" stop-color="#8A2BE2" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#4B0082" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#9400D3" stop-opacity=".5"/>
+          <stop offset="100%" stop-color="#4B0082" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M -100 450 Q 400 100, 800 350 T 1600 200" stroke="url(#lg1)" stroke-width="2" fill="none"/>
+      <path d="M -100 500 Q 500 200, 900 400 T 1600 250" stroke="url(#lg2)" stroke-width="1.5" fill="none"/>
+      <path d="M -100 350 Q 300 50, 700 250 T 1600 100" stroke="url(#lg1)" stroke-width="1" fill="none" opacity=".7"/>
+      <path d="M -100 550 Q 600 300, 1000 500 T 1600 350" stroke="url(#lg2)" stroke-width="1" fill="none" opacity=".5"/>
+    </svg>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
+      <div class="w-full md:w-3/5 lg:w-1/2">
+        <h1 class="text-3xl sm:text-4xl lg:text-[2.5rem] leading-tight text-white font-light mb-10">
+          Faça download de <em class="italic font-normal">White Papers</em> e estudos de caso que são referência para o mercado automotivo pesado.
+        </h1>
+        <p class="text-base md:text-lg text-gray-200 font-light mt-12">Estudos completos para download.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHITE PAPERS GRID ========== -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-12">White Papers</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-14">
+
+        <!-- Card 1 -->
+        <article>
+          <p class="text-base md:text-lg font-light text-gray-600 mb-4">Forecast Maquinas Agrícolas</p>
+          <a href="https://bim3.com.br/wp-content/uploads/2026/02/MKT-INSIGHT-FORECAST_2026_2030-Rev_Feb26.pdf" target="_blank" rel="noopener"
+             class="card relative block w-full aspect-[4/3] border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-center items-center text-center p-8"
+             style="background: linear-gradient(180deg, #fff 0%, #e8e8ec 100%);">
+            <h3 class="text-2xl md:text-3xl font-bold text-brand-blue leading-tight mb-3">Market Insight & Forecast</h3>
+            <p class="text-base md:text-lg text-brand-purple">[Maquinas Agrícolas]</p>
+            <svg class="absolute bottom-4 left-4 opacity-20" width="32" height="32" viewBox="0 0 40 40" fill="#000">
+              <circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/><circle cx="24" cy="14" r="1.5"/>
+              <circle cx="8" cy="22" r="1.5"/><circle cx="16" cy="22" r="1.5"/><circle cx="24" cy="22" r="1.5"/>
+              <circle cx="8" cy="30" r="1.5"/><circle cx="16" cy="30" r="1.5"/><circle cx="24" cy="30" r="1.5"/>
+              <circle cx="14" cy="8" r="1.5"/><circle cx="22" cy="8" r="1.5"/><circle cx="30" cy="8" r="1.5"/>
+              <circle cx="30" cy="16" r="1.5"/><circle cx="30" cy="24" r="1.5"/>
+            </svg>
+          </a>
+        </article>
+
+        <!-- Card 2 -->
+        <article>
+          <p class="text-base md:text-lg font-light text-gray-600 mb-4">Forecast Caminhões e Ônibus</p>
+          <a href="https://bim3.com.br/wp-content/uploads/2026/02/MKT-INSIGHT-FORECAST_2026_2030-Rev_Jan_26.pdf" target="_blank" rel="noopener"
+             class="card relative block w-full aspect-[4/3] border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-center items-center text-center p-8"
+             style="background: linear-gradient(180deg, #fff 0%, #e8e8ec 100%);">
+            <h3 class="text-2xl md:text-3xl font-bold text-brand-blue leading-tight mb-3">[BIM]³ - Truck & Bus Forecast 2026</h3>
+            <p class="text-base md:text-lg text-brand-purple">January - 2026</p>
+            <svg class="absolute bottom-4 left-4 opacity-20" width="32" height="32" viewBox="0 0 40 40" fill="#000">
+              <circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/><circle cx="24" cy="14" r="1.5"/>
+              <circle cx="8" cy="22" r="1.5"/><circle cx="16" cy="22" r="1.5"/><circle cx="24" cy="22" r="1.5"/>
+              <circle cx="8" cy="30" r="1.5"/><circle cx="16" cy="30" r="1.5"/><circle cx="24" cy="30" r="1.5"/>
+              <circle cx="14" cy="8" r="1.5"/><circle cx="22" cy="8" r="1.5"/><circle cx="30" cy="8" r="1.5"/>
+              <circle cx="30" cy="16" r="1.5"/><circle cx="30" cy="24" r="1.5"/>
+            </svg>
+          </a>
+        </article>
+
+        <!-- Card 3 -->
+        <article>
+          <p class="text-base md:text-lg font-light text-gray-600 mb-4">White Paper Move Brasil</p>
+          <a href="https://bim3.com.br/wp-content/uploads/2026/02/PAPER_Racional_Move_white_paper.pdf" target="_blank" rel="noopener"
+             class="card relative block w-full aspect-[4/3] bg-white border border-gray-200 shadow-sm overflow-hidden">
+            <div class="absolute -bottom-16 -left-10 w-72 h-72 rounded-full bg-purple-200 opacity-70"></div>
+            <div class="absolute -bottom-20 left-32 w-80 h-80 rounded-full bg-indigo-300 opacity-60"></div>
+            <div class="absolute -bottom-24 right-0 w-72 h-72 rounded-full bg-purple-400 opacity-50"></div>
+            <div class="absolute -bottom-12 right-20 w-56 h-56 rounded-full bg-slate-400 opacity-40"></div>
+            <svg class="absolute bottom-4 left-4 opacity-20 z-10" width="32" height="32" viewBox="0 0 40 40" fill="#000">
+              <circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/><circle cx="24" cy="14" r="1.5"/>
+              <circle cx="8" cy="22" r="1.5"/><circle cx="16" cy="22" r="1.5"/><circle cx="24" cy="22" r="1.5"/>
+              <circle cx="8" cy="30" r="1.5"/><circle cx="16" cy="30" r="1.5"/><circle cx="24" cy="30" r="1.5"/>
+              <circle cx="14" cy="8" r="1.5"/><circle cx="22" cy="8" r="1.5"/><circle cx="30" cy="8" r="1.5"/>
+              <circle cx="30" cy="16" r="1.5"/><circle cx="30" cy="24" r="1.5"/>
+            </svg>
+          </a>
+        </article>
+
+        <!-- Card 4 -->
+        <article>
+          <p class="text-base md:text-lg font-light text-gray-600 mb-4">Máquinas Agrícolas: Peças de Reposição – Mercado Carente e Lucrativo</p>
+          <a href="https://bim3.com.br/wp-content/uploads/2026/04/O-Aftermarket-Invisivel-1o.-Artigo-BIM.pdf" target="_blank" rel="noopener"
+             class="card relative block w-full aspect-[4/3] bg-white border border-gray-200 shadow-sm overflow-hidden">
+            <svg class="absolute -bottom-6 -right-6 w-56 h-56" viewBox="0 0 200 200">
+              <g fill="none" stroke="#000" stroke-width="14" stroke-linecap="round">
+                <circle cx="60" cy="60" r="20"/>
+                <circle cx="120" cy="50" r="25"/>
+                <circle cx="160" cy="110" r="22"/>
+                <circle cx="100" cy="130" r="28"/>
+                <circle cx="50" cy="150" r="18"/>
+                <line x1="60" y1="60" x2="120" y2="50"/>
+                <line x1="120" y1="50" x2="160" y2="110"/>
+                <line x1="160" y1="110" x2="100" y2="130"/>
+                <line x1="100" y1="130" x2="50" y2="150"/>
+                <line x1="60" y1="60" x2="100" y2="130"/>
+              </g>
+            </svg>
+            <svg class="absolute bottom-4 left-4 opacity-20 z-10" width="32" height="32" viewBox="0 0 40 40" fill="#000">
+              <circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/><circle cx="24" cy="14" r="1.5"/>
+              <circle cx="8" cy="22" r="1.5"/><circle cx="16" cy="22" r="1.5"/><circle cx="24" cy="22" r="1.5"/>
+              <circle cx="8" cy="30" r="1.5"/><circle cx="16" cy="30" r="1.5"/><circle cx="24" cy="30" r="1.5"/>
+              <circle cx="14" cy="8" r="1.5"/><circle cx="22" cy="8" r="1.5"/><circle cx="30" cy="8" r="1.5"/>
+              <circle cx="30" cy="16" r="1.5"/><circle cx="30" cy="24" r="1.5"/>
+            </svg>
+          </a>
+        </article>
+
+        <!-- Card 5 -->
+        <article>
+          <p class="text-base md:text-lg font-light text-gray-600 mb-4">Panorama de Máquinas Agrícolas no Brasil</p>
+          <a href="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL-APRESENTACAO_White_Paper_revisado.pdf" target="_blank" rel="noopener"
+             class="card relative block w-full aspect-[4/3] bg-white border border-gray-200 shadow-sm overflow-hidden">
+            <img src="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL.jpg" alt="Panorama de Máquinas Agrícolas" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 flex items-center justify-center p-6">
+              <div class="bg-white/85 backdrop-blur-sm px-6 py-5 text-center max-w-sm shadow-lg">
+                <p class="text-[10px] tracking-widest text-amber-600 font-semibold uppercase mb-2">[Estudo Inédito]</p>
+                <h3 class="text-base md:text-lg font-bold text-emerald-900 uppercase leading-tight mb-2">Panorama de Máquinas Agrícolas no Brasil</h3>
+                <hr class="border-gray-300 my-2" />
+                <p class="text-[10px] tracking-wider text-gray-500 uppercase">Tratores, Colheitadeiras e Pulverizadores</p>
+              </div>
+            </div>
+            <svg class="absolute bottom-4 left-4 opacity-30 z-10" width="32" height="32" viewBox="0 0 40 40" fill="#fff">
+              <circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/><circle cx="24" cy="14" r="1.5"/>
+              <circle cx="8" cy="22" r="1.5"/><circle cx="16" cy="22" r="1.5"/><circle cx="24" cy="22" r="1.5"/>
+              <circle cx="8" cy="30" r="1.5"/><circle cx="16" cy="30" r="1.5"/><circle cx="24" cy="30" r="1.5"/>
+              <circle cx="14" cy="8" r="1.5"/><circle cx="22" cy="8" r="1.5"/><circle cx="30" cy="8" r="1.5"/>
+              <circle cx="30" cy="16" r="1.5"/><circle cx="30" cy="24" r="1.5"/>
+            </svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-black text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        <div class="flex items-start">
+          <div class="flex items-center gap-2">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="#fff">
+              <circle cx="8" cy="14" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="24" cy="14" r="2"/>
+              <circle cx="8" cy="22" r="2"/><circle cx="16" cy="22" r="2"/><circle cx="24" cy="22" r="2"/>
+              <circle cx="8" cy="30" r="2"/><circle cx="16" cy="30" r="2"/><circle cx="24" cy="30" r="2"/>
+              <circle cx="14" cy="8" r="2"/><circle cx="22" cy="8" r="2"/><circle cx="30" cy="8" r="2"/>
+              <circle cx="30" cy="16" r="2"/><circle cx="30" cy="24" r="2"/>
+            </svg>
+            <span class="text-2xl font-bold tracking-tight">[BIM]<sup class="text-base">3</sup></span>
+          </div>
+        </div>
+
+        <nav class="flex flex-col space-y-3 text-[12px] uppercase font-medium tracking-wider">
+          <a href="#" class="hover:text-brand-gold">Home</a>
+          <a href="#" class="hover:text-brand-gold">Quem Somos</a>
+          <a href="#" class="hover:text-brand-gold">Produtos e Serviços</a>
+          <a href="#" class="hover:text-brand-gold">Artigos e Imprensa</a>
+          <a href="#" class="hover:text-brand-gold">Contato</a>
+        </nav>
+
+        <div class="flex flex-col md:items-end">
+          <p class="text-[11px] uppercase tracking-widest mb-4">Siga-nos nas redes sociais</p>
+          <div class="flex gap-4">
+            <a href="https://www.instagram.com/boschiconsultoria/" target="_blank" rel="noopener" aria-label="Instagram" class="hover:text-brand-gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1C2.6 8.5 2.6 8.9 2.6 12s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4C15.5 4 15.1 4 12 4zm0 3.1a4.9 4.9 0 110 9.8 4.9 4.9 0 010-9.8zm0 1.8a3.1 3.1 0 100 6.2 3.1 3.1 0 000-6.2zm5.1-2c.7 0 1.2.5 1.2 1.2s-.5 1.2-1.2 1.2-1.2-.5-1.2-1.2.5-1.2 1.2-1.2z"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/company/bim3/" target="_blank" rel="noopener" aria-label="LinkedIn" class="hover:text-brand-gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 11-.01-4.13 2.06 2.06 0 01.01 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-14 pt-6 border-t border-gray-800 flex flex-col md:flex-row md:justify-between md:items-center text-xs text-gray-400 gap-4">
+        <p class="text-center md:text-left">© 2026 BIM³ – Todos os direitos reservados.</p>
+        <p class="text-center md:text-right text-gray-500">
+          <a href="http://www.gingerpages.com.br" target="_blank" rel="noopener" class="hover:text-white">gingerpages</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      const isHidden = menu.classList.toggle('hidden');
+      menu.classList.toggle('flex', !isHidden);
+      btn.setAttribute('aria-expanded', String(!isHidden));
+    });
+  </script>
+</body>
+</html>
