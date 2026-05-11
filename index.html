@@ -1,819 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Faça download de White Papers e estudos de caso que são referência para o mercado automotivo pesado." />
-  <title>Insights & White Papers – BIM³</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inteligência de mercado, análises e estudos sobre a indústria automotiva pesada e o agronegócio brasileiro. Publicado pela BIM³ — Boschi Inteligência de Mercado.">
+  <title>Insights — BIM³ · Boschi Inteligência de Mercado</title>
 
-  <!-- Tailwind via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- PDF.js da Mozilla — biblioteca open-source para renderizar PDFs em canvas
-       (a mesma que o Firefox usa internamente). Permite UI 100% customizada. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-  <!-- Fonte 'aller' (Adobe Fonts, proprietária) substituída por Lato (Google Fonts) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Lato', 'aller', 'system-ui', 'sans-serif'] },
-          colors: {
-            'bim-text':   '#333333',
-            'bim-h2':     '#3F3B44',
-            'bim-hero':   '#EEEEEE',
-            'bim-footer': '#EEEEEE',
-            'bim-social': '#69727D',
-          }
-        }
-      }
-    };
-  </script>
-
-  <style>
-    body { font-family: 'Lato', 'aller', sans-serif; -webkit-font-smoothing: antialiased; color: #333; }
-
-    /* Tipografia exata do site original */
-    .typo-h1-hero    { font-size: 36px; font-weight: 300; line-height: 43.2px; letter-spacing: -0.5px; }
-    .typo-sub-hero   { font-size: 22px; font-weight: 300; line-height: 26.4px; letter-spacing: -0.5px; }
-    .typo-h2-section { font-size: 36px; font-weight: 600; line-height: 36px; }
-    .typo-card-title { font-size: 26px; font-weight: 300; line-height: 31.2px; letter-spacing: -0.5px; }
-    .typo-nav-header { font-size: 13px; font-weight: 300; line-height: 20px; letter-spacing: -0.1px; text-transform: uppercase; }
-    .typo-nav-footer { font-size: 16px; font-weight: 400; line-height: 20px; text-transform: uppercase; }
-
-    /* Hero */
-    .hero { background-color: #000; min-height: 65vh; position: relative; isolation: isolate; }
-    .hero::before {
-      content: ""; position: absolute; inset: 0;
-      background-image: url("https://bim3.com.br/wp-content/uploads/2025/07/pawel-czerwinski-ve-UaSZQtqk-unsplash-scaled.jpg");
-      background-size: cover; background-position: center;
-      opacity: 0.5; z-index: -1; pointer-events: none;
-    }
-
-    /* Card */
-    .card-shadow { box-shadow: 0 0 10px rgba(0,0,0,0.15); }
-    .card-btn { transition: transform .25s ease, box-shadow .25s ease; cursor: pointer; }
-    .card-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
-
-    .card-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,86,179,0.85);
-      color: white;
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 8px;
-      opacity: 0; transition: opacity .25s ease;
-      pointer-events: none;
-    }
-    .card-btn:hover .card-overlay { opacity: 1; }
-
-    @media (max-width: 767px) {
-      .hero { min-height: 50vh; }
-      .typo-h1-hero    { font-size: 28px; line-height: 1.2; }
-      .typo-sub-hero   { font-size: 18px; }
-      .typo-h2-section { font-size: 28px; }
-      .typo-card-title { font-size: 20px; line-height: 1.3; }
-    }
-
-    /* ============================================================
-       LEITOR DE PDF CUSTOMIZADO (PDF.js + UI própria)
-       ============================================================ */
-
-    #pdf-modal {
-      position: fixed; inset: 0; z-index: 1000;
-      background: linear-gradient(180deg, #0a0a14 0%, #1a0a2e 50%, #0a0514 100%);
-      display: none;
-      flex-direction: column;
-      animation: pdfModalEnter .35s cubic-bezier(.2, .8, .2, 1);
-    }
-    #pdf-modal.active { display: flex; }
-
-    @keyframes pdfModalEnter {
-      from { opacity: 0; transform: scale(.96); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
-    /* Header sticky com glassmorphism */
-    #pdf-modal-header {
-      position: sticky; top: 0; z-index: 10;
-      background: rgba(15, 15, 25, 0.65);
-      backdrop-filter: blur(24px) saturate(1.5);
-      -webkit-backdrop-filter: blur(24px) saturate(1.5);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 14px 24px;
-      display: flex; align-items: center; gap: 16px;
-      flex-shrink: 0;
-    }
-
-    /* Ícone de documento (gradiente roxo) */
-    .pdf-doc-icon {
-      width: 36px; height: 44px;
-      background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%);
-      border-radius: 4px;
-      flex-shrink: 0;
-      position: relative;
-      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
-    }
-    .pdf-doc-icon::before {
-      content: "PDF";
-      position: absolute;
-      bottom: 4px; left: 0; right: 0;
-      text-align: center;
-      font-size: 9px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: 0.5px;
-    }
-    .pdf-doc-icon::after {
-      content: "";
-      position: absolute;
-      top: 0; right: 0;
-      width: 12px; height: 12px;
-      background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.3) 50%);
-    }
-
-    .pdf-title-block {
-      flex: 1; min-width: 0;
-      display: flex; flex-direction: column; gap: 2px;
-    }
-    #pdf-modal-title {
-      color: #f5f5f5;
-      font-size: 14px; font-weight: 600;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    #pdf-page-info {
-      color: #a0a0a0;
-      font-size: 12px; font-weight: 400;
-    }
-    #pdf-page-info .current { color: #e9d5ff; font-weight: 600; }
-
-    /* Grupos de botões da toolbar */
-    .pdf-toolbar-group {
-      display: flex; gap: 2px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 4px;
-    }
-
-    .pdf-icon-btn {
-      width: 36px; height: 36px;
-      background: transparent;
-      border: 0;
-      border-radius: 6px;
-      color: rgba(255,255,255,0.7);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .15s ease;
-      text-decoration: none;
-    }
-    .pdf-icon-btn:hover {
-      background: rgba(255,255,255,0.1);
-      color: white;
-    }
-    .pdf-icon-btn:disabled {
-      opacity: 0.35; cursor: not-allowed;
-    }
-    .pdf-icon-btn.danger:hover {
-      background: rgba(220,38,38,0.25);
-      color: #ffb0b0;
-    }
-
-    #pdf-zoom-display {
-      color: #f5f5f5;
-      font-size: 12px;
-      font-weight: 600;
-      min-width: 44px;
-      text-align: center;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Body com scroll das páginas */
-    #pdf-modal-body {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: auto;
-      padding: 32px 16px 64px;
-      scroll-behavior: smooth;
-      position: relative;
-    }
-    /* Scrollbar customizada */
-    #pdf-modal-body::-webkit-scrollbar { width: 12px; }
-    #pdf-modal-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-    #pdf-modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 6px; }
-    #pdf-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
-
-    .pdf-pages-container {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* Cada página: card branco com sombra elegante */
-    .pdf-page-wrap {
-      background: white;
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.4),
-        0 4px 16px rgba(0,0,0,0.4),
-        0 24px 48px rgba(0,0,0,0.3);
-      border-radius: 3px;
-      overflow: hidden;
-      position: relative;
-      min-height: 200px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .pdf-page-wrap canvas {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-    /* Placeholder enquanto canvas não renderizou */
-    .pdf-page-wrap:not([data-rendered]) {
-      background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
-      min-height: 600px;
-    }
-    .pdf-page-wrap:not([data-rendered])::before {
-      content: attr(data-page-label);
-      color: #aaa;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    /* Loading inicial (antes de saber quantas páginas tem) */
-    #pdf-loading {
-      display: none;
-      flex: 1;
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: 18px;
-      color: #f5f5f5;
-    }
-    #pdf-loading.active { display: flex; }
-
-    .pdf-spinner {
-      width: 56px; height: 56px;
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top-color: #a855f7;
-      border-right-color: #a855f7;
-      border-radius: 50%;
-      animation: spin .9s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    #pdf-loading span {
-      font-size: 14px;
-      color: #c0c0c0;
-      font-weight: 500;
-    }
-    #pdf-loading small {
-      font-size: 12px;
-      color: #888;
-    }
-
-    /* Estado de erro */
-    #pdf-error {
-      display: none;
-      flex: 1;
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: 16px;
-      color: #f5f5f5;
-      padding: 40px;
-      text-align: center;
-    }
-    #pdf-error.active { display: flex; }
-    #pdf-error h3 { font-size: 18px; font-weight: 600; }
-    #pdf-error p { color: #a0a0a0; font-size: 14px; max-width: 400px; }
-
-    /* Responsivo */
-    @media (max-width: 768px) {
-      #pdf-modal-header {
-        padding: 10px 12px;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .pdf-doc-icon { width: 28px; height: 36px; }
-      .pdf-doc-icon::before { font-size: 7px; bottom: 3px; }
-      #pdf-modal-title { font-size: 12px; }
-      #pdf-page-info { font-size: 11px; }
-      .pdf-icon-btn { width: 32px; height: 32px; }
-      .pdf-icon-btn svg { width: 16px; height: 16px; }
-      #pdf-zoom-display { font-size: 11px; min-width: 36px; }
-      #pdf-modal-body { padding: 16px 8px 32px; }
-      .pdf-pages-container { gap: 14px; }
-    }
-
-    /* Em telas muito pequenas, esconder zoom para caber tudo */
-    @media (max-width: 480px) {
-      .pdf-toolbar-group.zoom-group { display: none; }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
+<body>
 
-<body class="bg-white">
-
-  <!-- ============== HEADER ============== -->
-  <header class="bg-white">
-    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 flex items-center justify-between" style="min-height:140px;">
-      <a href="#" aria-label="BIM³">
-        <img src="https://bim3.com.br/wp-content/uploads/2025/06/bim-horizontal-k.png"
-             alt="BIM³" width="170" height="68" class="block h-auto w-[170px]" />
-      </a>
-
-      <nav class="hidden md:flex items-center gap-8 typo-nav-header">
-        <a href="#" class="text-black hover:opacity-60 transition-opacity">Home</a>
-        <a href="#" class="text-black hover:opacity-60 transition-opacity">Quem Somos</a>
-        <a href="#" class="text-black hover:opacity-60 transition-opacity">Produtos e Serviços</a>
-        <a href="#" class="text-black hover:opacity-60 transition-opacity">Artigos e Imprensa</a>
-        <a href="#" class="text-black hover:opacity-60 transition-opacity">Contato</a>
-      </nav>
-
-      <button id="menu-btn" class="md:hidden p-2" aria-label="Menu">
-        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="black">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-
-    <nav id="mobile-menu" class="hidden md:hidden flex-col bg-white border-t border-gray-100 px-5 py-4 gap-2 typo-nav-header">
-      <a href="#" class="text-black py-2">Home</a>
-      <a href="#" class="text-black py-2">Quem Somos</a>
-      <a href="#" class="text-black py-2">Produtos e Serviços</a>
-      <a href="#" class="text-black py-2">Artigos e Imprensa</a>
-      <a href="#" class="text-black py-2">Contato</a>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="./index.html" class="site-logo">BIM<em>³</em></a>
+    <nav class="site-nav" id="site-nav">
+      <a href="#">Home</a>
+      <a href="#">Quem Somos</a>
+      <a href="#">Produtos & Serviços</a>
+      <a href="./index.html" class="active">Insights</a>
+      <a href="#">Contato</a>
     </nav>
-  </header>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
 
-  <!-- ============== HERO ============== -->
-  <section class="hero flex flex-col justify-center">
-    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 w-full">
-      <div class="max-w-[640px]">
-        <p class="typo-h1-hero text-bim-hero mb-12">
-          Faça download de <em class="italic font-light">White Papers</em> e estudos de caso que são referência para o mercado automotivo pesado.
-        </p>
-        <p class="typo-sub-hero text-bim-hero">Estudos completos para download.</p>
-      </div>
+<!-- HERO -->
+<section class="home-hero">
+  <p class="home-eyebrow">Insights · Edição 2026</p>
+  <h1 class="home-title">
+    Inteligência de mercado para quem <em>decide</em> o futuro da indústria pesada
+  </h1>
+  <p class="home-subtitle">
+    Análises, estudos e forecasts sobre o setor automotivo pesado, máquinas agrícolas e a cadeia de autopeças no Brasil. Conteúdo produzido com dados primários e metodologia própria.
+  </p>
+</section>
+
+<!-- FEATURED POST -->
+<section class="featured-post">
+  <a href="./post-aftermarket-invisivel.html" class="featured-post-link">
+    <div class="featured-post-image">
+      <img src="https://bim3.com.br/wp-content/uploads/2026/04/Img-bim.jpg" alt="Peças de Reposição">
     </div>
-  </section>
-
-  <!-- ============== WHITE PAPERS GRID ============== -->
-  <section class="bg-white py-14 md:py-16">
-    <div class="max-w-[1200px] mx-auto px-5 lg:px-10">
-      <h2 class="typo-h2-section text-bim-h2 mb-12">White Papers</h2>
-
-      <div class="flex flex-row flex-wrap gap-5">
-
-        <!-- Card 1 -->
-        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p class="typo-card-title text-bim-h2">Forecast Maquinas Agrícolas</p>
-          <button type="button"
-                  class="card-btn relative card-shadow p-[30px] bg-white border-0 text-left w-full"
-                  onclick="openPdfViewer('./MKT-INSIGHT-FORECAST_2026_2030-Rev_Feb26.pdf', 'Market Insight & Forecast — Máquinas Agrícolas')">
-            <img src="https://bim3.com.br/wp-content/uploads/2026/02/Market-insight.jpg"
-                 alt="Market Insight & Forecast - Máquinas Agrícolas"
-                 width="600" height="450" class="w-full h-auto block" />
-            <span class="card-overlay">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <span class="font-semibold uppercase tracking-wider text-sm">Ler estudo</span>
-            </span>
-          </button>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p class="typo-card-title text-bim-h2">Forecast Caminhões e Ônibus</p>
-          <button type="button"
-                  class="card-btn relative card-shadow p-[30px] bg-white border-0 text-left w-full"
-                  onclick="openPdfViewer('./MKT-INSIGHT-FORECAST_2026_2030-Rev_Jan_26.pdf', '[BIM]³ Truck & Bus Forecast 2026')">
-            <img src="https://bim3.com.br/wp-content/uploads/2026/02/Truck-bus.jpg"
-                 alt="[BIM]³ - Truck & Bus Forecast 2026"
-                 width="600" height="450" class="w-full h-auto block" />
-            <span class="card-overlay">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <span class="font-semibold uppercase tracking-wider text-sm">Ler estudo</span>
-            </span>
-          </button>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p class="typo-card-title text-bim-h2">White Paper Move Brasil</p>
-          <button type="button"
-                  class="card-btn relative card-shadow p-[30px] bg-white border-0 text-left w-full"
-                  onclick="openPdfViewer('./PAPER_Racional_Move_white_paper.pdf', 'PAPER: Racional MOVE — Avaliação Técnica')">
-            <img src="https://bim3.com.br/wp-content/uploads/2026/02/white-paper.jpg"
-                 alt="White Paper Move Brasil"
-                 width="600" height="450" class="w-full h-auto block" loading="lazy" />
-            <span class="card-overlay">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <span class="font-semibold uppercase tracking-wider text-sm">Ler estudo</span>
-            </span>
-          </button>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p class="typo-card-title text-bim-h2">Máquinas Agrícolas: Peças de Reposição – Mercado Carente e Lucrativo</p>
-          <button type="button"
-                  class="card-btn relative card-shadow p-[30px] bg-white border-0 text-left w-full"
-                  onclick="openPdfViewer('./O-Aftermarket-Invisivel-1o_-Artigo-BIM.pdf', 'O Aftermarket Invisível — Peças de Reposição')">
-            <img src="https://bim3.com.br/wp-content/uploads/2026/04/Img-bim.jpg"
-                 alt="Peças de Reposição - Mercado Carente e Lucrativo"
-                 width="600" height="450" class="w-full h-auto block" loading="lazy" />
-            <span class="card-overlay">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <span class="font-semibold uppercase tracking-wider text-sm">Ler estudo</span>
-            </span>
-          </button>
-        </article>
-
-        <!-- Card 5 -->
-        <article class="w-full md:w-[calc(50%-10px)] flex flex-col gap-3">
-          <p class="typo-card-title text-bim-h2">Panorama de Máquinas Agrícolas no Brasil</p>
-          <button type="button"
-                  class="card-btn relative card-shadow p-[30px] bg-white border-0 text-left w-full"
-                  onclick="openPdfViewer('./PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL-APRESENTACAO_White_Paper_revisado.pdf', 'Panorama de Máquinas Agrícolas no Brasil')">
-            <img src="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL.jpg"
-                 alt="Panorama de Máquinas Agrícolas no Brasil"
-                 width="600" height="450" class="w-full h-auto block" loading="lazy" />
-            <span class="card-overlay">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <span class="font-semibold uppercase tracking-wider text-sm">Ler estudo</span>
-            </span>
-          </button>
-        </article>
-
-      </div>
+    <div>
+      <p class="featured-post-meta">Análise <span class="dot">·</span> 13 de abril de 2026 <span class="dot">·</span> 6 min de leitura</p>
+      <h2>Máquinas agrícolas: o <em>aftermarket invisível</em> que vale bilhões</h2>
+      <p class="featured-post-excerpt">
+        Existe no Brasil uma frota de mais de 1,6 milhão de máquinas agrícolas que circula por milhões de hectares sem deixar rastro em sistemas públicos. Nesse vácuo informacional está uma das maiores oportunidades inexploradas do agronegócio.
+      </p>
+      <p class="featured-post-author">Por BIM³ · com colaboração de Leopoldo Munhoz</p>
     </div>
-  </section>
+  </a>
+</section>
 
-  <!-- ============== FOOTER ============== -->
-  <footer class="bg-black text-bim-footer">
-    <div class="max-w-[1200px] mx-auto px-5 lg:px-10 py-16">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
-        <div>
-          <img src="https://bim3.com.br/wp-content/uploads/2025/06/bim3-white-1-712x1024.png"
-               alt="BIM³" width="97" height="139" class="w-[97px] h-auto" />
-        </div>
-
-        <nav class="flex flex-col space-y-3 typo-nav-footer">
-          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Home</a>
-          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Quem Somos</a>
-          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Produtos e Serviços</a>
-          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Artigos e Imprensa</a>
-          <a href="#" class="text-bim-footer hover:opacity-70 transition-opacity">Contato</a>
-        </nav>
-
-        <div class="flex flex-col md:items-end">
-          <p class="typo-nav-footer mb-5">Siga-nos nas redes sociais</p>
-          <div class="flex gap-3">
-            <a href="https://www.instagram.com/boschiconsultoria/" target="_blank" rel="noopener" aria-label="Instagram"
-               class="w-12 h-12 flex items-center justify-center bg-black text-bim-social hover:text-white transition-colors">
-              <svg width="22" height="22" viewBox="0 0 448 512" fill="currentColor">
-                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/company/bim3/" target="_blank" rel="noopener" aria-label="LinkedIn"
-               class="w-12 h-12 flex items-center justify-center bg-black text-bim-social hover:text-white transition-colors">
-              <svg width="22" height="22" viewBox="0 0 448 512" fill="currentColor">
-                <path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <p class="text-center md:text-left text-sm" style="color:#EEEEEE;opacity:0.7">
-          © 2026 BIM³ – Todos os direitos reservados.
-        </p>
-        <a href="http://www.gingerpages.com.br" target="_blank" rel="noopener" class="hover:opacity-100 opacity-70 transition-opacity self-center md:self-auto">
-          <img src="https://bim3.com.br/wp-content/uploads/2025/06/logo-gingerpagesW.png"
-               alt="gingerpages" width="100" class="h-auto" />
-        </a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ============== MODAL DO LEITOR DE PDF (CUSTOM) ============== -->
-  <div id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title">
-    <div id="pdf-modal-header">
-      <div class="pdf-doc-icon" aria-hidden="true"></div>
-
-      <div class="pdf-title-block">
-        <span id="pdf-modal-title">Visualizar PDF</span>
-        <span id="pdf-page-info">
-          Página <span class="current" id="pdf-current-page">–</span>
-          de <span id="pdf-total-pages">–</span>
-        </span>
-      </div>
-
-      <!-- Zoom -->
-      <div class="pdf-toolbar-group zoom-group" role="group" aria-label="Zoom">
-        <button class="pdf-icon-btn" id="pdf-zoom-out" title="Diminuir zoom" aria-label="Diminuir zoom">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
-          </svg>
-        </button>
-        <span id="pdf-zoom-display">100%</span>
-        <button class="pdf-icon-btn" id="pdf-zoom-in" title="Aumentar zoom" aria-label="Aumentar zoom">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Ações -->
-      <div class="pdf-toolbar-group" role="group" aria-label="Ações">
-        <a id="pdf-download-btn" class="pdf-icon-btn" href="#" download title="Baixar PDF">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
-          </svg>
-        </a>
-        <a id="pdf-newtab-btn" class="pdf-icon-btn" href="#" target="_blank" rel="noopener" title="Abrir em nova aba">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
-          </svg>
-        </a>
-        <button type="button" class="pdf-icon-btn danger" onclick="closePdfViewer()" title="Fechar (ESC)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div id="pdf-modal-body">
-      <!-- Loading inicial -->
-      <div id="pdf-loading">
-        <div class="pdf-spinner"></div>
-        <span>Carregando documento</span>
-        <small id="pdf-loading-detail"></small>
-      </div>
-
-      <!-- Erro -->
-      <div id="pdf-error">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
-        </svg>
-        <h3>Não foi possível carregar o documento</h3>
-        <p id="pdf-error-message">Verifique sua conexão e tente novamente.</p>
-      </div>
-
-      <!-- Container das páginas (preenchido via JS) -->
-      <div class="pdf-pages-container" id="pdf-pages-container"></div>
-    </div>
+<!-- POSTS GRID -->
+<section class="posts-section">
+  <div class="section-header">
+    <h3 class="section-title">Publicações recentes</h3>
+    <a href="#" class="section-link">Ver todas →</a>
   </div>
 
-  <!-- ============== JS ============== -->
-  <script>
-    // ===== Menu mobile =====
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.toggle('hidden');
-      mobileMenu.classList.toggle('flex', !isHidden);
-      menuBtn.setAttribute('aria-expanded', String(!isHidden));
-    });
+  <div class="posts-grid">
 
-    // ===== Configuração do PDF.js =====
-    // Define o caminho do "worker" — código que roda em thread separada para não travar a UI
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    <a href="./post-forecast-maquinas-agricolas.html" class="post-card">
+      <div class="post-card-image">
+        <img src="https://bim3.com.br/wp-content/uploads/2026/02/Market-insight.jpg" alt="">
+      </div>
+      <p class="post-card-meta cat-forecast">Forecast <span class="dot">·</span> Fevereiro 2026</p>
+      <h3 class="post-card-title">Máquinas agrícolas em 2026: o ciclo de baixa que esconde uma oportunidade</h3>
+      <p class="post-card-excerpt">
+        A produção de tratores deve recuar 1% em 2026, mas o número não conta a história toda. O que os dados revelam sobre frota envelhecida, juros altos e a janela que se abre até 2030.
+      </p>
+    </a>
 
-    // ===== Referências de DOM =====
-    const modal           = document.getElementById('pdf-modal');
-    const modalTitle      = document.getElementById('pdf-modal-title');
-    const currentPageEl   = document.getElementById('pdf-current-page');
-    const totalPagesEl    = document.getElementById('pdf-total-pages');
-    const downloadBtn     = document.getElementById('pdf-download-btn');
-    const newtabBtn       = document.getElementById('pdf-newtab-btn');
-    const zoomInBtn       = document.getElementById('pdf-zoom-in');
-    const zoomOutBtn      = document.getElementById('pdf-zoom-out');
-    const zoomDisplay     = document.getElementById('pdf-zoom-display');
-    const pagesContainer  = document.getElementById('pdf-pages-container');
-    const loadingEl       = document.getElementById('pdf-loading');
-    const loadingDetailEl = document.getElementById('pdf-loading-detail');
-    const errorEl         = document.getElementById('pdf-error');
-    const errorMessageEl  = document.getElementById('pdf-error-message');
-    const modalBody       = document.getElementById('pdf-modal-body');
+    <a href="./post-forecast-truck-bus.html" class="post-card">
+      <div class="post-card-image">
+        <img src="https://bim3.com.br/wp-content/uploads/2026/02/Truck-bus.jpg" alt="">
+      </div>
+      <p class="post-card-meta cat-forecast">Forecast <span class="dot">·</span> Janeiro 2026</p>
+      <h3 class="post-card-title">Caminhões em queda, ônibus em alta: o setor pesado em transição</h3>
+      <p class="post-card-excerpt">
+        Produção de caminhões caiu 12% em 2025, mas ônibus cresceram. Por trás do contraste estão Selic a 15%, dependência da Argentina e um programa de R$10 bilhões que pode mudar o jogo.
+      </p>
+    </a>
 
-    // ===== Estado =====
-    let pdfDocument = null;          // documento PDF.js carregado
-    let baseScale = 1.5;             // escala base (1.5 ≈ 100% legível)
-    let zoomLevel = 1.0;             // multiplicador de zoom (0.5 a 3.0)
-    let renderObserver = null;       // observer para lazy render
-    let pageObserver = null;         // observer para detectar página atual
-    let lastFocus = null;
+    <a href="./post-programa-move.html" class="post-card">
+      <div class="post-card-image">
+        <img src="https://bim3.com.br/wp-content/uploads/2026/02/white-paper.jpg" alt="">
+      </div>
+      <p class="post-card-meta cat-paper">White Paper <span class="dot">·</span> Janeiro 2026</p>
+      <h3 class="post-card-title">Programa MOVE: por que R$10 bilhões podem virar apenas 3.000 caminhões novos</h3>
+      <p class="post-card-excerpt">
+        Avaliação técnica do programa de renovação de frota: taxas atrativas, exigências de contrapartida e o trade-off que separa o desenho da política do resultado prático.
+      </p>
+    </a>
 
-    // ===== Abrir o leitor =====
-    async function openPdfViewer(pdfUrl, title) {
-      lastFocus = document.activeElement;
-      modalTitle.textContent = title;
-      downloadBtn.href = pdfUrl;
-      newtabBtn.href = pdfUrl;
-      currentPageEl.textContent = '–';
-      totalPagesEl.textContent = '–';
-      zoomLevel = 1.0;
-      updateZoomDisplay();
+    <a href="./post-panorama-maquinas.html" class="post-card">
+      <div class="post-card-image">
+        <img src="https://bim3.com.br/wp-content/uploads/2025/09/PANORAMA-DE-MAQUINAS-AGRICOLAS-NO-BRASIL.jpg" alt="">
+      </div>
+      <p class="post-card-meta cat-estudo">Estudo Inédito <span class="dot">·</span> Setembro 2025</p>
+      <h3 class="post-card-title">Panorama de Máquinas Agrícolas: o estudo que iluminou um setor no escuro</h3>
+      <p class="post-card-excerpt">
+        700 entrevistas presenciais em 8 meses para mapear uma frota que não existe no papel. Idade média, marcas, intenção de compra e o que os produtores realmente pensam.
+      </p>
+    </a>
 
-      // Reset visual
-      pagesContainer.innerHTML = '';
-      errorEl.classList.remove('active');
-      loadingEl.classList.add('active');
-      loadingDetailEl.textContent = '';
+  </div>
+</section>
 
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-brand">
+      <a href="./index.html" class="site-logo">BIM<em>³</em></a>
+      <p>Boschi Inteligência de Mercado. Especialistas em inteligência competitiva para o setor automotivo pesado, máquinas agrícolas e indústria.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Conteúdo</h5>
+      <ul>
+        <li><a href="#">Insights</a></li>
+        <li><a href="#">White Papers</a></li>
+        <li><a href="#">Forecasts</a></li>
+        <li><a href="#">Estudos setoriais</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>BIM³</h5>
+      <ul>
+        <li><a href="#">Quem somos</a></li>
+        <li><a href="#">Produtos & Serviços</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="https://www.linkedin.com/company/bim3/" target="_blank">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BIM³ · Boschi Inteligência de Mercado</span>
+    <span>contato@boschiconsultoria.com.br</span>
+  </div>
+</footer>
 
-      try {
-        // Carrega o PDF (com progress)
-        const loadingTask = pdfjsLib.getDocument({
-          url: pdfUrl,
-          cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-          cMapPacked: true,
-        });
+<script>
+  document.getElementById('menu-toggle').addEventListener('click', () => {
+    document.getElementById('site-nav').classList.toggle('open');
+  });
+</script>
 
-        loadingTask.onProgress = (p) => {
-          if (p.total > 0) {
-            const pct = Math.round((p.loaded / p.total) * 100);
-            loadingDetailEl.textContent = `${pct}% carregado`;
-          }
-        };
-
-        pdfDocument = await loadingTask.promise;
-        totalPagesEl.textContent = pdfDocument.numPages;
-
-        // Cria placeholders pra todas as páginas
-        for (let i = 1; i <= pdfDocument.numPages; i++) {
-          const wrap = document.createElement('div');
-          wrap.className = 'pdf-page-wrap';
-          wrap.dataset.pageNum = i;
-          wrap.dataset.pageLabel = `Página ${i}`;
-          pagesContainer.appendChild(wrap);
-        }
-
-        loadingEl.classList.remove('active');
-
-        // Configura observers para lazy rendering e indicador de página
-        setupObservers();
-
-      } catch (err) {
-        console.error('Erro ao carregar PDF:', err);
-        loadingEl.classList.remove('active');
-        errorEl.classList.add('active');
-        errorMessageEl.textContent = err?.message || 'Erro desconhecido';
-      }
-    }
-
-    // ===== Renderizar uma página individual =====
-    async function renderPage(wrap) {
-      const pageNum = parseInt(wrap.dataset.pageNum);
-      if (wrap.dataset.rendered === 'true' || wrap.dataset.rendering === 'true') return;
-      wrap.dataset.rendering = 'true';
-
-      try {
-        const page = await pdfDocument.getPage(pageNum);
-        // Resolução: dpr ajusta para telas retina sem ficar gigante demais
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const scale = baseScale * zoomLevel * dpr;
-        const viewport = page.getViewport({ scale });
-
-        // Cria canvas
-        let canvas = wrap.querySelector('canvas');
-        if (!canvas) {
-          canvas = document.createElement('canvas');
-          wrap.appendChild(canvas);
-        }
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        // CSS size = tamanho exibido (canvas size = resolução de renderização)
-        canvas.style.width = (viewport.width / dpr) + 'px';
-        canvas.style.height = (viewport.height / dpr) + 'px';
-
-        await page.render({
-          canvasContext: canvas.getContext('2d'),
-          viewport
-        }).promise;
-
-        wrap.dataset.rendered = 'true';
-        wrap.dataset.rendering = 'false';
-      } catch (err) {
-        console.error(`Erro ao renderizar página ${pageNum}:`, err);
-        wrap.dataset.rendering = 'false';
-      }
-    }
-
-    // ===== Observers: lazy render + indicador de página atual =====
-    function setupObservers() {
-      // Limpa observers anteriores
-      if (renderObserver) renderObserver.disconnect();
-      if (pageObserver) pageObserver.disconnect();
-
-      // Lazy render: começa a renderizar quando página entra/se aproxima do viewport
-      renderObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) renderPage(entry.target);
-        });
-      }, {
-        root: modalBody,
-        rootMargin: '500px 0px', // pre-render 500px antes de aparecer
-        threshold: 0.01
-      });
-
-      // Indicador de página atual: detecta qual página está mais visível
-      pageObserver = new IntersectionObserver((entries) => {
-        // pega a entrada com maior intersectionRatio
-        let best = null;
-        entries.forEach(e => {
-          if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
-            best = e;
-          }
-        });
-        if (best) currentPageEl.textContent = best.target.dataset.pageNum;
-      }, {
-        root: modalBody,
-        threshold: [0.3, 0.5, 0.7]
-      });
-
-      pagesContainer.querySelectorAll('.pdf-page-wrap').forEach(wrap => {
-        renderObserver.observe(wrap);
-        pageObserver.observe(wrap);
-      });
-    }
-
-    // ===== Zoom =====
-    function updateZoomDisplay() {
-      zoomDisplay.textContent = Math.round(zoomLevel * 100) + '%';
-      zoomOutBtn.disabled = zoomLevel <= 0.5;
-      zoomInBtn.disabled = zoomLevel >= 3.0;
-    }
-
-    async function changeZoom(delta) {
-      const newZoom = Math.max(0.5, Math.min(3.0, zoomLevel + delta));
-      if (newZoom === zoomLevel) return;
-      zoomLevel = newZoom;
-      updateZoomDisplay();
-
-      // Marca todas as páginas como não-renderizadas e re-renderiza visíveis
-      pagesContainer.querySelectorAll('.pdf-page-wrap').forEach(w => {
-        w.dataset.rendered = 'false';
-        const c = w.querySelector('canvas');
-        if (c) { c.width = 0; c.height = 0; c.style.width = ''; c.style.height = ''; }
-      });
-      // Reaplica observer (vai re-renderizar as páginas visíveis com a nova escala)
-      setupObservers();
-    }
-
-    zoomInBtn.addEventListener('click', () => changeZoom(0.25));
-    zoomOutBtn.addEventListener('click', () => changeZoom(-0.25));
-
-    // ===== Fechar =====
-    function closePdfViewer() {
-      modal.classList.remove('active');
-      // Limpa o estado para liberar memória
-      if (renderObserver) renderObserver.disconnect();
-      if (pageObserver) pageObserver.disconnect();
-      pagesContainer.innerHTML = '';
-      if (pdfDocument) {
-        pdfDocument.destroy();
-        pdfDocument = null;
-      }
-      document.body.style.overflow = '';
-      if (lastFocus) lastFocus.focus();
-    }
-
-    // ESC fecha
-    document.addEventListener('keydown', (e) => {
-      if (!modal.classList.contains('active')) return;
-      if (e.key === 'Escape') closePdfViewer();
-      else if (e.key === '+' || e.key === '=') { e.preventDefault(); changeZoom(0.25); }
-      else if (e.key === '-' || e.key === '_') { e.preventDefault(); changeZoom(-0.25); }
-    });
-
-    // Click no overlay (fora das páginas) fecha — só se for direto no body, não nas páginas
-    modalBody.addEventListener('click', (e) => {
-      if (e.target === modalBody) closePdfViewer();
-    });
-  </script>
 </body>
 </html>
