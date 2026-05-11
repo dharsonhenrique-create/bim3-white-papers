@@ -91,10 +91,18 @@ img { max-width: 100%; height: auto; display: block; }
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: -0.1px;
-  transition: opacity .15s;
+  padding: 10px 18px;
+  border-radius: 4px;
+  transition: background-color .25s ease, color .25s ease;
 }
-.site-nav a:hover { opacity: 0.6; }
-.site-nav a.active { font-weight: 600; }
+.site-nav a:hover {
+  background-color: #a855f7;
+  color: #ffffff;
+}
+.site-nav a.active {
+  background-color: #a855f7;
+  color: #ffffff;
+}
 
 .menu-toggle {
   display: none;
@@ -801,4 +809,116 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 768px) {
   .site-footer { padding: 48px 20px 24px; }
   .site-footer-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* =====================================================
+   POLIMENTO PREMIUM
+   ===================================================== */
+
+/* Reading progress bar (só em posts) */
+#reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #a855f7 0%, #c084fc 100%);
+  z-index: 100;
+  transition: width .1s ease-out;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+}
+
+/* Selection com cor da marca */
+::selection { background: #a855f7; color: #ffffff; }
+::-moz-selection { background: #a855f7; color: #ffffff; }
+
+/* Smooth scrolling para âncoras */
+html { scroll-behavior: smooth; }
+
+/* Reveal animations (scroll-in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .9s cubic-bezier(.2, .7, .2, 1),
+              transform .9s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card image hover refinement: overlay sutil escurece a imagem */
+.post-card-image, .featured-post-image {
+  position: relative;
+  isolation: isolate;
+}
+.post-card-image::after,
+.featured-post-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background .35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.post-card:hover .post-card-image::after,
+.featured-post-link:hover .featured-post-image::after {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Animação stagger inicial do hero da home */
+.home-hero .home-eyebrow,
+.home-hero .home-title,
+.home-hero .home-subtitle {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroFadeIn .9s cubic-bezier(.2, .7, .2, 1) forwards;
+}
+.home-hero .home-eyebrow  { animation-delay: 0.05s; }
+.home-hero .home-title    { animation-delay: 0.20s; }
+.home-hero .home-subtitle { animation-delay: 0.35s; }
+
+@keyframes heroFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Respeito a prefers-reduced-motion (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .home-hero .home-eyebrow, .home-hero .home-title, .home-hero .home-subtitle {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Print stylesheet — artigos imprimíveis ficam limpos */
+@media print {
+  .site-header, .site-footer, .post-aside, .post-footer,
+  .menu-toggle, #reading-progress, .back-link {
+    display: none !important;
+  }
+  body { background: white; color: black; font-size: 11pt; line-height: 1.5; }
+  .post-layout { display: block; padding: 0; max-width: 100%; gap: 0; }
+  .post-body { max-width: 100%; font-size: 11pt; }
+  .post-body p { font-size: 11pt; }
+  .post-body h2 { font-size: 18pt; page-break-after: avoid; margin-top: 24pt; }
+  .post-body h3 { font-size: 14pt; page-break-after: avoid; }
+  .post-body blockquote,
+  .post-body .number-grid,
+  .post-body .callout,
+  .post-body table { page-break-inside: avoid; }
+  .post-body blockquote::before { display: none; }
+  a { color: black; text-decoration: underline; }
+  .post-title { font-size: 28pt; line-height: 1.15; }
+  .post-subtitle { font-size: 13pt; }
+  .post-cover { padding: 0; margin-bottom: 24pt; }
+  .post-cover img { max-height: 200pt; object-fit: cover; }
+  .post-meta-row { font-size: 9pt; color: #666; }
+  .number-grid { border: 1px solid #ccc; padding: 12pt; }
+  .stat-value { font-size: 22pt; }
 }
