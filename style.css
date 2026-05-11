@@ -81,7 +81,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .site-nav {
   display: flex; gap: 32px;
-  font-family: var(--sans-ui);
+  font-family: 'aller', 'Lato', var(--sans-ui);
   font-size: 13px;
   font-weight: 300;
   line-height: 20px;
